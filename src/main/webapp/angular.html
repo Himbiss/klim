@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+    <p>Today's welcome message is:</p>
+
+    <ul>
+        <li ng-repeat="x in myWelcome">
+            {{ x.userName }}
+        </li>
+    </ul>
+
+</div>
+
+<script src="/js/testctrl.js"></script>
+
+</body>
+</html>

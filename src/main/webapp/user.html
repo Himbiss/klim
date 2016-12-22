@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <!-- bootstrap just to have good looking page -->
+    <link href="/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet" >
+    <link href="/css/user.css" type="text/css" rel="stylesheet">
+    <base href="/">
+</head>
+
+<body>
+
+<div ng-app="klim" ng-controller="UserCtrl" class="content">
+    <div class="card hovercard">
+        <div class="cardheader" ng-style="bgStyle"></div>
+        <div class="avatar">
+            <img alt="" ng-src="{{ user.avatarImg }}">
+            <button class="btn_unfollow" ng-click="unfollow()" ng-show="isFollower == true">
+                <i class="fa fa-minus" aria-hidden="true"></i>
+            </button>
+            <button class="btn_follow" ng-click="follow()" ng-show="isFollower == false">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="info">
+            <input type="button" value="set color" ng-click="bgStyle={color:'red'}">
+            <div class="title">
+                <a>{{ user.userName }}</a>
+            </div>
+        </div>
+        <div class="bottom">
+            <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+                <i class="fa fa-twitter"></i>
+            </a>
+            <a class="btn btn-danger btn-sm" rel="publisher"
+               href="https://plus.google.com/+ahmshahnuralam">
+                <i class="fa fa-google-plus"></i>
+            </a>
+            <a class="btn btn-primary btn-sm" rel="publisher"
+               href="https://plus.google.com/shahnuralam">
+                <i class="fa fa-facebook"></i>
+            </a>
+            <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                <i class="fa fa-behance"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="contentboard">
+        <div class="feed">
+            <div class="submit">
+                <form action="/user?action=submit_post" method="POST">
+                    <textarea name="content" placeholder="How do you feel today? :)"></textarea>
+                    <input hidden="true" name="profileId" value="<%= user.getId() %>"/>
+                    <button>post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/userCtrl.js"></script>
+
+</body>
+</html>
