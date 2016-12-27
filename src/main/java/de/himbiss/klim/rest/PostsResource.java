@@ -1,6 +1,7 @@
 package de.himbiss.klim.rest;
 
 import de.himbiss.klim.DAO;
+import de.himbiss.klim.PostRequest;
 import de.himbiss.klim.servlets.beans.Post;
 import de.himbiss.klim.servlets.beans.User;
 
@@ -17,20 +18,20 @@ public class PostsResource {
     private final CommentsResource commentsResource = new CommentsResource();
 
     @GET
-    public List<Post> getPosts(@PathParam("userId") int userId) {
+    public List<Post> getPosts(@QueryParam("userId") int userId) {
         return DAO.getInstance().getAllPostsToUser(userId);
     }
 
     @GET
     @Path("/{postId}")
-    public Post getUser(@PathParam("postId") int postId) {
+    public Post getPost(@PathParam("postId") int postId) {
         return DAO.getInstance().getPost(postId);
     }
 
     @POST
-    @Path("/")
-    public Response makePost(@FormParam("userId") int userId, @FormParam("profileId") int profileId, @FormParam("content") String content) {
-        int postingId = DAO.getInstance().createPosting(userId, profileId, content);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response makePost(PostRequest postRequest) {
+        int postingId = DAO.getInstance().createPosting(postRequest.getUserId(), postRequest.getProfileId(), postRequest.getContent());
         if (postingId != -1) {
             return Response.ok(DAO.getInstance().getPost(postingId)).build();
         }
@@ -38,6 +39,18 @@ public class PostsResource {
             return Response.serverError().build();
         }
     }
+
+    @DELETE
+    @Path("/{postId}")
+    public Response deletePost(@PathParam("postId") int postId) {
+        if (DAO.getInstance().deletePosting(postId)) {
+            return Response.ok().build();
+        }
+        else {
+            return Response.serverError().build();
+        }
+    }
+
     @Path("/{postId}/comments")
     public CommentsResource comments() {
         return commentsResource;

@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Post {
     private int id;
-    private int from;
+    private User from;
     private int to;
     private Date date;
     private String content;
@@ -17,7 +17,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(int id, int creator, int to, Date date, String content) {
+    public Post(int id, User creator, int to, Date date, String content) {
         this.id = id;
         this.from = creator;
         this.date = date;
@@ -33,11 +33,11 @@ public class Post {
         return content;
     }
 
-    public int getFrom() {
+    public User getFrom() {
         return from;
     }
 
-    public void setFrom(int from) {
+    public void setFrom(User from) {
         this.from = from;
     }
 

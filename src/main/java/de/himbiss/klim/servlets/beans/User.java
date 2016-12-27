@@ -14,11 +14,12 @@ public class User {
     private String backgroundImg;
     private Date creationTime;
     private String email;
+    private String role;
 
     public User() {
     }
 
-    public User(int id, String userName, List<String> description, String avatarImg, String backgroundImg, Date creationTime, String email) {
+    public User(int id, String userName, List<String> description, String avatarImg, String backgroundImg, Date creationTime, String email, String role) {
         this.id = id;
         this.userName = userName;
         this.description = description;
@@ -26,6 +27,15 @@ public class User {
         this.backgroundImg = backgroundImg;
         this.creationTime = creationTime;
         this.email = email;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Date getCreationTime() {

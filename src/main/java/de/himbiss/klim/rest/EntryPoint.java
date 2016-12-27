@@ -1,10 +1,17 @@
 package de.himbiss.klim.rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import de.himbiss.klim.DAO;
+import de.himbiss.klim.LoginRequest;
+import de.himbiss.klim.LoginResponse;
+import de.himbiss.klim.servlets.beans.User;
+
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Vincent on 19.12.2016.
@@ -12,15 +19,41 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public class EntryPoint {
     private final UsersResource usersResource = new UsersResource();
+    private final FollowersResource followersResource = new FollowersResource();
+    private final PostsResource postsResource = new PostsResource();
 
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String get() {
-        return "Hallo";
-    }
+    private final Map<User, String> sessionMap = new HashMap<>();
 
     @Path("users")
     public UsersResource users() {
         return usersResource;
+    }
+
+    @Path("posts")
+    public PostsResource posts() {
+        return postsResource;
+    }
+
+    @Path("followers")
+    public FollowersResource followers() {
+        return followersResource;
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("login")
+    public Response login(LoginRequest loginRequest) {
+        System.err.println(loginRequest.getUsername() + ":" + loginRequest.getPassword());
+        User user = DAO.getInstance().getUser(loginRequest.getUsername());
+        if (user != null) {
+            String sessionId = sessionMap.get(user);
+            if (sessionId != null) {
+                return Response.ok(new LoginResponse(sessionId, user)).build();
+            }
+            else {
+                return Response.ok(new LoginResponse(UUID.randomUUID().toString(), user)).build();
+            }
+        }
+        return Response.status(404).build();
     }
 }

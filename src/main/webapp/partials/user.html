@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="utf-8"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.0/angular-resource.js"></script>
+        <!-- bootstrap just to have good looking page -->
+        <link href="/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
+        <link href="/font-awesome/css/font-awesome.css" rel="stylesheet" >
+        <link href="/css/user.css" type="text/css" rel="stylesheet">
+        <base href="/">
+    </head>
+
+    <body>
+        <div ng-app="klim" ng-controller="UserCtrl" class="content">
+            <div class="card hovercard">
+                <div class="cardheader" ng-style="{'background-image':'url('+currentUser.backgroundImg+')'}"></div>
+                <div class="avatar">
+                    <img alt="" ng-src="{{ currentUser.avatarImg }}">
+                    <button class="btn_unfollow" ng-click="unfollow()" ng-show="isFollower == true">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                   </button>
+                   <button class="btn_follow" ng-click="follow()" ng-show="isFollower == false">
+                       <i class="fa fa-plus" aria-hidden="true"></i>
+                   </button>
+               </div>
+               <div class="info">
+                   <div class="title">
+                       <a>{{ currentUser.userName }}</a>
+                   </div>
+                   <div ng-repeat="desc in currentUser.description">
+                       <div class="desc">{{ desc }}</div>
+                   </div>
+               </div>
+               <div class="bottom">
+                   <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+                       <i class="fa fa-twitter"></i>
+                   </a>
+                   <a class="btn btn-danger btn-sm" rel="publisher"
+                      href="https://plus.google.com/+ahmshahnuralam">
+                       <i class="fa fa-google-plus"></i>
+                   </a>
+                   <a class="btn btn-primary btn-sm" rel="publisher"
+                      href="https://plus.google.com/shahnuralam">
+                       <i class="fa fa-facebook"></i>
+                   </a>
+                   <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                       <i class="fa fa-behance"></i>
+                   </a>
+               </div>
+            </div>
+            <div class="contentboard">
+                <div class="feed">
+                    <div class="submit">
+                        <form>
+                            <textarea name="content" ng-model="content" placeholder="How do you feel today? :)"></textarea>
+                            <button ng-click="post()">POST</button>
+                        </form>
+                    </div>
+                    <div ng-repeat="post in posts">
+                        <div class="post">
+                            <div class="chip">
+                                <a href="/user/{{ post.from.userName }}"><img src="{{ post.from.avatarImg }}" width="96" height="96"></a>
+                                <p class="chip_name"> {{post.from.userName}} </p>
+                            </div>
+                            <p align="left" class="content_chip"> {{ post.content }} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/klim.js"></script>
+    </body>
+</html>

@@ -63,6 +63,18 @@ public class DAO {
         }
     }
 
+    public boolean deletePosting(int postId) {
+        try {
+            String query = "DELETE FROM `posts` WHERE id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, postId);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public int createPosting(int userId, int profileUserId, String content) {
         try {
             String query = "INSERT INTO `posts` (`creation_time`, `posted_to`, `creator`, `content`) VALUES (CURRENT_TIMESTAMP, ?, ?, ?);";
@@ -81,12 +93,12 @@ public class DAO {
         return -1;
     }
 
-    public boolean followUser (int userId, int friendId) {
+    public boolean followUser (int userId, int followerId) {
         try {
             String query = "INSERT INTO `friends` (`user_id`, `friend_id`) VALUES (?, ?);";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, friendId);
+            preparedStatement.setInt(2, followerId);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,12 +106,12 @@ public class DAO {
         }
     }
 
-    public boolean unfollowUser (int userId, int friendId) {
+    public boolean unfollowUser (int userId, int followerId) {
         try {
             String query = "DELETE FROM `friends` WHERE user_id = ? AND friend_id = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, friendId);
+            preparedStatement.setInt(2, followerId);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,7 +131,7 @@ public class DAO {
                 Date creationTime = resultSet.getDate("creation_time");
                 String content = resultSet.getString("content").replace("\n", "<br>");
                 int postedTo = resultSet.getInt("posted_to");
-                return new Post(id, creator, postedTo, creationTime, content);
+                return new Post(id, getUser(creator), postedTo, creationTime, content);
             }
             return null;
         } catch (SQLException e) {
@@ -141,7 +153,7 @@ public class DAO {
                 Date creationTime = resultSet.getDate("creation_time");
                 String content = resultSet.getString("content").replace("\n", "<br>");
                 int postedTo = resultSet.getInt("posted_to");
-                posts.add(new Post(id, creator, postedTo, creationTime, content));
+                posts.add(new Post(id, getUser(creator), postedTo, creationTime, content));
             }
             return posts;
         } catch (SQLException e) {
@@ -184,7 +196,8 @@ public class DAO {
                 String avatar = resultSet.getString("avatar");
                 String background = resultSet.getString("background");
                 String description = resultSet.getString("description");
-                return new User(id, username, Arrays.asList(description.split("::")), avatar, background, creationTime, email);
+                String role = resultSet.getString("role");
+                return new User(id, username, Arrays.asList(description.split("::")), avatar, background, creationTime, email, role);
             }
             return null;
         } catch (SQLException e) {
@@ -206,7 +219,8 @@ public class DAO {
                 String avatar = resultSet.getString("avatar");
                 String background = resultSet.getString("background");
                 String description = resultSet.getString("description");
-                return new User(userId, username, Arrays.asList(description.split("::")), avatar, background, creationTime, email);
+                String role = resultSet.getString("role");
+                return new User(userId, username, Arrays.asList(description.split("::")), avatar, background, creationTime, email, role);
             }
             return null;
         } catch (SQLException e) {

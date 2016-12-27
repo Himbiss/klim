@@ -17,10 +17,10 @@ import org.eclipse.jetty.webapp.WebXmlConfiguration;
 
 public class EmbedMe {
 	public static void main(String[] args) throws Exception {
-		int port = 8080;
+		int port = 1234;
 		Server server = new Server(port);
 		
-		String wardir = "target/sample-webapp-1-SNAPSHOT";
+		String wardir = "target/klim-1-SNAPSHOT";
 
         JDBCLoginService loginService = new JDBCLoginService("JDBCRealm", "jdbc.properties");
 		server.addBean(loginService);
