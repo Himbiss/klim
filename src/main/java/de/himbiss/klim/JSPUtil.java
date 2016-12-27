@@ -2,7 +2,6 @@ package de.himbiss.klim;
 
 import de.himbiss.klim.servlets.beans.User;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspWriter;
 import java.io.IOException;
 
@@ -12,7 +11,7 @@ import java.io.IOException;
 public class JSPUtil {
 
     public static void createChip(String contextPath, JspWriter out, int userId) throws IOException {
-        User user = DAO.getInstance().getUser(userId);
+        User user = DAO.getInstance().getUserById(userId);
         out.write("<div class=\"chip\">");
         out.write("<a href=\"" + contextPath + "/user/" + user.getUserName() + "\"><img src=\"" + user.getAvatarImg() + "\" width=\"96\" height=\"96\"></a>");
         out.write("<p class=\"chip_name\">" + user.getUserName() + "</p>");

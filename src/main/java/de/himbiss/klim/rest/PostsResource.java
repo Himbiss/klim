@@ -18,8 +18,8 @@ public class PostsResource {
     private final CommentsResource commentsResource = new CommentsResource();
 
     @GET
-    public List<Post> getPosts(@QueryParam("userId") int userId) {
-        return DAO.getInstance().getAllPostsToUser(userId);
+    public List<Post> getPosts(@QueryParam("userId") String userId) {
+        return DAO.getInstance().getAllPostsToUser(DAO.getInstance().getUser(userId).getId());
     }
 
     @GET

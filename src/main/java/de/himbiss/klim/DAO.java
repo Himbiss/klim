@@ -51,7 +51,7 @@ public class DAO {
             List<User> friends = new LinkedList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("friend_id");
-                User friend = getUser(id);
+                User friend = getUserById(id);
                 if (friend != null) {
                     friends.add(friend);
                 }
@@ -78,6 +78,7 @@ public class DAO {
     public int createPosting(int userId, int profileUserId, String content) {
         try {
             String query = "INSERT INTO `posts` (`creation_time`, `posted_to`, `creator`, `content`) VALUES (CURRENT_TIMESTAMP, ?, ?, ?);";
+            System.err.println("userId:" + userId + " profileId:" + profileUserId + " content:" + content);
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, profileUserId);
             preparedStatement.setInt(2, userId);
@@ -131,7 +132,7 @@ public class DAO {
                 Date creationTime = resultSet.getDate("creation_time");
                 String content = resultSet.getString("content").replace("\n", "<br>");
                 int postedTo = resultSet.getInt("posted_to");
-                return new Post(id, getUser(creator), postedTo, creationTime, content);
+                return new Post(id, getUserById(creator), postedTo, creationTime, content);
             }
             return null;
         } catch (SQLException e) {
@@ -153,7 +154,7 @@ public class DAO {
                 Date creationTime = resultSet.getDate("creation_time");
                 String content = resultSet.getString("content").replace("\n", "<br>");
                 int postedTo = resultSet.getInt("posted_to");
-                posts.add(new Post(id, getUser(creator), postedTo, creationTime, content));
+                posts.add(new Post(id, getUserById(creator), postedTo, creationTime, content));
             }
             return posts;
         } catch (SQLException e) {
@@ -183,7 +184,7 @@ public class DAO {
 
     }
 
-    public User getUser(String username) {
+    public User getUserByUserName(String username) {
         try {
             String query = "SELECT * FROM users WHERE username = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -206,7 +207,17 @@ public class DAO {
         }
     }
 
-    public User getUser(int userId) {
+    public User getUser(String userIdOrUserName) {
+        char c = userIdOrUserName.charAt(0);
+        if (c <= '9' && c >='0') {
+            return getUserById(Integer.parseInt(userIdOrUserName));
+        }
+        else {
+            return getUserByUserName(userIdOrUserName);
+        }
+    }
+
+    public User getUserById(int userId) {
         try {
             String query = "SELECT * FROM users WHERE id = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);

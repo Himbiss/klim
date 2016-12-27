@@ -14,21 +14,21 @@
     <body>
         <div ng-app="klim" ng-controller="UserCtrl" class="content">
             <div class="card hovercard">
-                <div class="cardheader" ng-style="{'background-image':'url('+currentUser.backgroundImg+')'}"></div>
+                <div class="cardheader" ng-style="{'background-image':'url('+profileUser.backgroundImg+')'}"></div>
                 <div class="avatar">
-                    <img alt="" ng-src="{{ currentUser.avatarImg }}">
-                    <button class="btn_unfollow" ng-click="unfollow()" ng-show="isFollower == true">
+                    <img alt="" ng-src="{{ profileUser.avatarImg }}">
+                    <button class="btn_unfollow" ng-click="unfollow()" ng-show="isFollower == true && currentUser.id != profileUser.id">
                         <i class="fa fa-minus" aria-hidden="true"></i>
                    </button>
-                   <button class="btn_follow" ng-click="follow()" ng-show="isFollower == false">
+                   <button class="btn_follow" ng-click="follow()" ng-show="isFollower == false && currentUser.id != profileUser.id">
                        <i class="fa fa-plus" aria-hidden="true"></i>
                    </button>
                </div>
                <div class="info">
                    <div class="title">
-                       <a>{{ currentUser.userName }}</a>
+                       <a>{{ profileUser.userName }}</a>
                    </div>
-                   <div ng-repeat="desc in currentUser.description">
+                   <div ng-repeat="desc in profileUser.description">
                        <div class="desc">{{ desc }}</div>
                    </div>
                </div>
@@ -52,18 +52,16 @@
             <div class="contentboard">
                 <div class="feed">
                     <div class="submit">
-                        <form>
                             <textarea name="content" ng-model="content" placeholder="How do you feel today? :)"></textarea>
                             <button ng-click="post()">POST</button>
-                        </form>
                     </div>
                     <div ng-repeat="post in posts">
                         <div class="post">
                             <div class="chip">
-                                <a href="/user/{{ post.from.userName }}"><img src="{{ post.from.avatarImg }}" width="96" height="96"></a>
+                                <a href="#!/user/{{ post.from.userName }}"><img src="{{ post.from.avatarImg }}" width="96" height="96"></a>
                                 <p class="chip_name"> {{post.from.userName}} </p>
                             </div>
-                            <p align="left" class="content_chip"> {{ post.content }} </p>
+                            <p align="left" class="content_chip" ng-bind-html="post.content"></p>
                         </div>
                     </div>
                 </div>

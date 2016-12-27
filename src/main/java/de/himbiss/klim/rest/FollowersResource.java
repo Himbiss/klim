@@ -17,15 +17,16 @@ public class FollowersResource {
 
     @GET
     @Path("/{userId}")
-    public List<User> getFollowers(@PathParam("userId") int userId) {
-        return DAO.getInstance().getAllFollowers(userId);
+    public List<User> getFollowers(@PathParam("userId") String userId) {
+        return DAO.getInstance().getAllFollowers(DAO.getInstance().getUser(userId).getId());
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response follow(FollowRequest followRequest) {
         System.err.println(followRequest.getUserId() + " : " + followRequest.getFollowerId());
-        if (DAO.getInstance().followUser(followRequest.getUserId(), followRequest.getFollowerId())) {
+        if (DAO.getInstance().followUser(DAO.getInstance().getUser(followRequest.getUserId()).getId(),
+                                         DAO.getInstance().getUser(followRequest.getFollowerId()).getId())) {
             return Response.ok().build();
         } else {
             return Response.serverError().build();
@@ -34,8 +35,8 @@ public class FollowersResource {
 
     @DELETE
     @Path("/{userId}/{followerId}")
-    public Response unfollow(@PathParam("userId") int userId, @PathParam("followerId") int followerId) {
-        if (DAO.getInstance().unfollowUser(userId, followerId)) {
+    public Response unfollow(@PathParam("userId") String userId, @PathParam("followerId") String followerId) {
+        if (DAO.getInstance().unfollowUser(DAO.getInstance().getUser(userId).getId(), DAO.getInstance().getUser(followerId).getId())) {
             return Response.ok().build();
         } else {
             return Response.serverError().build();
@@ -44,9 +45,9 @@ public class FollowersResource {
 
     @GET
     @Path("/{userId}/{followerId}")
-    public Response hasFollower(@PathParam("userId") int userId, @PathParam("followerId") int followerId) {
+    public Response hasFollower(@PathParam("userId") String userId, @PathParam("followerId") String followerId) {
         User follower = DAO.getInstance().getUser(followerId);
-        if (DAO.getInstance().getAllFollowers(userId).contains(follower)) {
+        if (DAO.getInstance().getAllFollowers(DAO.getInstance().getUser(userId).getId()).contains(follower)) {
             return Response.ok().build();
         }
         else {

@@ -1,4 +1,4 @@
-var app = angular.module('klim', ['ngResource', 'ngRoute'], function($locationProvider) {$locationProvider.html5Mode(true);})
+var app = angular.module('klim', ['ngResource', 'ngRoute', 'ngSanitize'])
                  .factory('User', function($resource) { return $resource('/rest/users/:id'); })
                  .factory('Followers', function($resource) {return $resource('/rest/followers/:userId/:followerId'); })
                  .factory('Posts', function($resource) { return $resource('/rest/posts/:id'); });
@@ -22,13 +22,13 @@ app.constant('USER_ROLES', {
 app.config(function($routeProvider, $locationProvider) {
     $routeProvider
     .when("/", {
+        redirectTo: '/login'
+    })
+    .when("/login", {
         templateUrl : "partials/login.html"
     })
     .when("/user/:name", {
         templateUrl : "partials/user.html"
     })
-    .otherwise({ redirectTo: '/' });
-
-    // use the HTML5 History API
-    $locationProvider.html5Mode(true);
+    .otherwise({ redirectTo: '/login' });
 });

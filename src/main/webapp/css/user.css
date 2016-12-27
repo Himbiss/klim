@@ -24,16 +24,16 @@ body {
 }
 
 .chip p {
-    width:0%;
+    max-width: 0px;
     overflow:hidden;
-    -webkit-transition: width .5s ease-in-out;
-    -moz-transition: width .5s ease-in-out;
-    -o-transition: width .5s ease-in-out;
-    transition: width .5s ease-in-out;
+    -webkit-transition: max-width .3s ease-in-out;
+    -moz-transition: max-width .3s ease-in-out;
+    -o-transition: max-width .3s ease-in-out;
+    transition: max-width .3s ease-in-out;
 }
 
 .chip:hover p {
-    width:100%;
+    max-width: 500px;
 }
 
 .feed {
@@ -47,27 +47,30 @@ body {
 
 .post {
   position: relative;
-  padding: 10px;
   display: inline-block;
   width: 100%;
+  display: flex;
 }
 
 .submit {
   position: relative;
   z-index: 1;
-  padding: 10px;
+  display: flex;
+}
+
+.submit button {
+  float: right;
 }
 
 textarea {
   float: left;
   font-family: "Roboto", sans-serif;
   outline: 0;
-  width: 72% !important;
-  margin: 0 0 15px;
-  min-height: 50px;
-  height: 50px;
+  flex-grow: 1;
+  min-height: 20px;
+  height: 20px;
+  margin-right: 15px;
   padding: 15px;
-  padding-left: 25px;
   background-color: #f2f2f2;
   font-size: 20px;
   border: 0px;
@@ -79,6 +82,10 @@ button {
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
+}
+
+.submit button {
+  max-height: 50px;
 }
 
 button:hover,.form button:active,.form button:focus {
@@ -118,9 +125,7 @@ button.btn_follow {
 
 p.chip_name {
   float: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 70%;
+  margin-right: 5px;
 }
 
 p.content_chip {
@@ -132,11 +137,9 @@ p.content_chip {
   border: 0;
   margin: 0 0 15px;
   padding: 15px;
-  padding-left: 25px;
   box-sizing: border-box;
   font-size: 20px;
   border-radius: -25px;
-  max-width: 60%;
   word-wrap:break-word;
 }
 
@@ -150,22 +153,22 @@ p.content_chip:hover {
 }
 .chip {
     float: left;
-    display: inline-block;
-    padding: 0 15px;
     height: 50px;
     font-size: 14px;
     line-height: 50px;
-    border-radius: 25px;
     background-color: #f1f1f1;
-    max-width: 20%;
+    display: flex;
     margin-right: 10px;
+    margin-left: 20px;
 }
 
 .chip img {
     float: left;
     margin: 0 10px 0 -25px;
     height: 50px;
+    min-height: 50px;
     width: 50px;
+    min-width: 50px;
     border-radius: 50%;
 }
 
