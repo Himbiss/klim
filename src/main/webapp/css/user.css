@@ -1,4 +1,6 @@
 
+
+
 body {
   background: #76b852; /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #76b852, #8DC26F);
@@ -13,7 +15,7 @@ body {
 .content {
   width: 69rem;
   min-width: 69rem;
-  margin: 1rem auto 0px auto;
+  margin: 1rem auto 1rem auto;
   display: flex;
 }
 
@@ -427,4 +429,35 @@ button {
     height:32px;
     line-height:18px;
     font-size: 30px;
+}
+
+@media screen and (max-width: 500px) {
+    /* For mobile phones: */
+    .card.hovercard {
+        margin: 0px;
+        width: 100%;
+    }
+
+    .contentboard {
+        margin: 0px;
+        width: 100%;
+     }
+
+     .content {
+        display: block;
+        margin: 0px;
+        width: 100%;
+        min-width: 100%;
+     }
+
+     .card {
+        float: none;
+        max-width: 100%;
+        box-shadow: none;
+     }
+
+     .feed {
+        margin: 0px;
+        box-shadow: none;
+     }
 }
