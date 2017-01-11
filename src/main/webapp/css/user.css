@@ -1,7 +1,6 @@
 
-
-
 body {
+  margin: 0px;
   background: #76b852; /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #76b852, #8DC26F);
   background: -moz-linear-gradient(right, #76b852, #8DC26F);
@@ -13,8 +12,8 @@ body {
 }
 
 .content {
-  width: 69rem;
-  min-width: 69rem;
+  width: 70%;
+  min-width: 70%;
   margin: 1rem auto 1rem auto;
   display: flex;
 }
@@ -26,6 +25,7 @@ body {
 }
 
 .chip p {
+    margin: 0px;
     max-width: 0px;
     overflow:hidden;
     -webkit-transition: max-width .3s ease-in-out;
@@ -34,13 +34,32 @@ body {
     transition: max-width .3s ease-in-out;
 }
 
+.searchbar {
+    font-family: "Roboto",sans-serif;
+    width: 15em;
+    box-sizing: border-box;
+    border: none;
+    font-size: 19px;
+    background-color: #FFF;
+    background-image: url("img/searchicon.png");
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    display: inline;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.searchbar:focus {
+    width: 25em;
+}
+
 .chip:hover p {
     max-width: 500px;
 }
 
 .feed {
   background: #FFFFFF;
-  margin-left: 20px;
   padding: 20px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -55,6 +74,7 @@ body {
 }
 
 .submit {
+  margin-bottom: 1em;
   position: relative;
   z-index: 1;
   display: flex;
@@ -69,12 +89,12 @@ textarea {
   font-family: "Roboto", sans-serif;
   outline: 0;
   flex-grow: 1;
-  min-height: 20px;
+  min-height: 50px;
   height: 20px;
   margin-right: 15px;
   padding: 15px;
   background-color: #f2f2f2;
-  font-size: 20px;
+  font-size: 17px;
   border: 0px;
   border-radius: 0px;
   box-shadow: none;
@@ -97,16 +117,16 @@ button:hover,.form button:active,.form button:focus {
 button.btn_unfollow {
     margin-left: -50px;
     font-size: 20px;
-    margin-top: 100px;
+    margin-top: 120px;
     border-radius: 100%;
     background: #af4c4c;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     border: 5px solid rgb(255,255,255);
+    position: absolute;
 }
 
 
@@ -117,12 +137,13 @@ button.btn_unfollow:hover {
 button.btn_follow {
     margin-left: -50px;
     font-size: 20px;
-    margin-top: 100px;
+    margin-top: 120px;
     border-radius: 100%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     border: 5px solid rgb(255,255,255);
+    position: absolute;
 }
 
 p.chip_name {
@@ -190,14 +211,12 @@ button {
 
 .card {
   float: left;
-    position: relative;
-      z-index: 1;
-      background: #FFFFFF;
-      min-width: 300px;
-      max-width: 360px;
-      margin: 0 auto 100px;
-      text-align: center;
-      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  margin: 0 auto 1em;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
 .card .card-heading {
@@ -373,7 +392,6 @@ button {
     padding-top: 0;
     overflow: hidden;
     text-align: center;
-    height: 100%;
 }
 
 .card.hovercard .cardheader {
@@ -388,10 +406,8 @@ button {
 }
 
 .card.hovercard .avatar img {
-    width: 200px;
-    height: 200px;
-    max-width: 200px;
-    max-height: 200px;
+    width: 70%;
+    height: 70%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -423,12 +439,99 @@ button {
     margin-bottom: 17px;
 }
 
-.btn{
-    border-radius: 50%;
-    width:32px;
-    height:32px;
-    line-height:18px;
-    font-size: 30px;
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #FFF;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+ul .navgroup {
+    width: 70%;
+    min-width: 70%;
+    margin: auto;
+    display: flex;
+}
+
+ul .left_group {
+    max-width: 25%;
+    width: 25%;
+    display: table;
+    table-layout: fixed;
+}
+
+ul .right_group {
+    margin-left: 1rem;
+    flex: 1;
+}
+
+.left_group li {
+    display: table-cell;
+    height: 100%;
+}
+
+.right_group li {
+    display: inline;
+    height: 100%;
+}
+
+li a {
+    height: 100%;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    background-color: #4CAF50;
+}
+
+li a:hover {
+    background: #43A047;
+    color: white;
+}
+
+.photo_box {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background: #FFFFFF;
+    margin: 0 auto 100px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    padding: 10px;
+    display: inherit;
+}
+
+.photos {
+  /* Prevent vertical gaps */
+  line-height: 0;
+  -webkit-column-count: 3;
+  -webkit-column-gap:   0px;
+  -moz-column-count:    3;
+  -moz-column-gap:      0px;
+  column-count:         3;
+  column-gap:           0px;
+  width: 100%;
+}
+
+.photos img {
+  /* Just in case there are inline attributes */
+  width: 100% !important;
+  height: auto !important;
+}
+
+.photo {
+    max-width: 100%;
+}
+
+.content_left {
+    min-width: 25%;
+    max-width: 25%;
 }
 
 @media screen and (max-width: 500px) {
@@ -460,4 +563,42 @@ button {
         margin: 0px;
         box-shadow: none;
      }
+
+     body {
+        margin: auto;
+     }
+
+     .submit {
+        display: inline-block;
+     }
+
+     textarea {
+        height: auto;
+        width: inherit;
+     }
+
+     ul .navgroup {
+        width: 100%;
+        min-width: 100%;
+        margin: 0px;
+        display: inline-block;
+     }
+
+     ul .left_group {
+         max-width: 100%;
+         width: 100%;
+     }
+
+    .searchbar:focus {
+        width: auto;
+    }
+
+    .photo_box {
+        display: none;
+    }
+
+    .content_left {
+        min-width: 100%;
+        max-width: 100%;
+    }
 }

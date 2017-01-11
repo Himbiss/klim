@@ -21,6 +21,8 @@ public class EntryPoint {
     private final UsersResource usersResource = new UsersResource();
     private final FollowersResource followersResource = new FollowersResource();
     private final PostsResource postsResource = new PostsResource();
+    private final PhotoResource photoResource = new PhotoResource();
+    private final DownloadResource downloadResource = new DownloadResource();
 
     private final Map<User, String> sessionMap = new HashMap<>();
 
@@ -37,6 +39,16 @@ public class EntryPoint {
     @Path("followers")
     public FollowersResource followers() {
         return followersResource;
+    }
+
+    @Path("photos")
+    public PhotoResource photos() {
+        return photoResource;
+    }
+
+    @Path("download")
+    public DownloadResource download() {
+        return downloadResource;
     }
 
     @POST

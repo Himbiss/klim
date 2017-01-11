@@ -1,72 +1,91 @@
-<!DOCTYPE html>
-<html>
-    <head lang="en">
-        <meta charset="utf-8"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.0/angular-resource.js"></script>
-        <!-- bootstrap just to have good looking page -->
-        <link href="/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
-        <link href="/font-awesome/css/font-awesome.css" rel="stylesheet" >
-        <link href="/css/user.css" type="text/css" rel="stylesheet">
-        <base href="/">
-    </head>
 
-    <body>
-        <div ng-app="klim" ng-controller="UserCtrl" class="content">
-            <div class="card hovercard">
-                <div class="cardheader" ng-style="{'background-image':'url('+profileUser.backgroundImg+')'}"></div>
-                <div class="avatar">
-                    <img alt="" ng-src="{{ profileUser.avatarImg }}">
-                    <button class="btn_unfollow" ng-click="unfollow()" ng-show="isFollower == true && currentUser.id != profileUser.id">
-                        <i class="fa fa-minus" aria-hidden="true"></i>
-                   </button>
-                   <button class="btn_follow" ng-click="follow()" ng-show="isFollower == false && currentUser.id != profileUser.id">
-                       <i class="fa fa-plus" aria-hidden="true"></i>
-                   </button>
-               </div>
-               <div class="info">
-                   <div class="title">
-                       <a>{{ profileUser.userName }}</a>
-                   </div>
-                   <div ng-repeat="desc in profileUser.description">
-                       <div class="desc">{{ desc }}</div>
-                   </div>
-               </div>
-               <div class="bottom">
-                   <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
-                       <i class="fa fa-twitter"></i>
-                   </a>
-                   <a class="btn btn-danger btn-sm" rel="publisher"
-                      href="https://plus.google.com/+ahmshahnuralam">
-                       <i class="fa fa-google-plus"></i>
-                   </a>
-                   <a class="btn btn-primary btn-sm" rel="publisher"
-                      href="https://plus.google.com/shahnuralam">
-                       <i class="fa fa-facebook"></i>
-                   </a>
-                   <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
-                       <i class="fa fa-behance"></i>
-                   </a>
-               </div>
+<ul>
+    <div class="navgroup">
+        <div class="left_group">
+            <li><a href="#feed"><i class="fa fa-hashtag" aria-hidden="true"></i></a></li>
+            <li><a href="#home"><i class="fa fa-home" aria-hidden="true"></i></i></a></li>
+            <li><a href="#photo"><i class="fa fa-camera" aria-hidden="true"></i></a></li>
+            <li><a href="#photo"><i class="fa fa-users" aria-hidden="true"></i></a></li>
+            <li><a href="#photo"><i class="fa fa-gamepad" aria-hidden="true"></i></a></li>
+        </div>
+        <div class="right_group">
+            <li><input class="searchbar" type="text" name="search" placeholder="Search.."> </li>
+            <li style="float:right"><a href="#about"><i class="fa fa-bars" aria-hidden="true"></i></a></li>
+        </div>
+    </div>
+</ul>
+<div ng-app="klim" ng-controller="UserCtrl" class="content">
+    <div class="content_left">
+      <div class="card hovercard">
+        <div class="cardheader" ng-style="{'background-image':'url('+profileUser.backgroundImg+')'}"></div>
+        <div class="avatar">
+            <img alt="" ng-src="{{ profileUser.avatarImg }}">
+            <button class="btn_unfollow" ng-click="unfollow()" ng-show="isFollower == true && currentUser.id != profileUser.id">
+                <i class="fa fa-minus" aria-hidden="true"></i>
+           </button>
+           <button class="btn_follow" ng-click="follow()" ng-show="isFollower == false && currentUser.id != profileUser.id">
+               <i class="fa fa-plus" aria-hidden="true"></i>
+           </button>
+       </div>
+       <div class="info">
+           <div class="title">
+               <a>{{ profileUser.userName }}</a>
+           </div>
+           <div ng-repeat="desc in profileUser.description">
+               <div class="desc">{{ desc }}</div>
+           </div>
+       </div>
+       <div class="bottom">
+           <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+               <i class="fa fa-twitter"></i>
+           </a>
+           <a class="btn btn-danger btn-sm" rel="publisher"
+              href="https://plus.google.com/+ahmshahnuralam">
+               <i class="fa fa-google-plus"></i>
+           </a>
+           <a class="btn btn-primary btn-sm" rel="publisher"
+              href="https://plus.google.com/shahnuralam">
+               <i class="fa fa-facebook"></i>
+           </a>
+           <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+               <i class="fa fa-behance"></i>
+           </a>
+       </div>
+    </div>
+      <div class="photo_box">
+          <div class="photos" style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2;">
+            <div ng-repeat="photo in profilePhotos | limitTo: 20">
+                <a ng-click="openLightboxModalProfilePhotos($index)">
+                    <img class="photo" ng-src="{{ photo.url }}"/>
+                </a>
             </div>
-            <div class="contentboard">
-                <div class="feed">
-                    <div class="submit">
-                            <textarea name="content" ng-model="content" placeholder="How do you feel today? :)"></textarea>
-                            <button ng-click="post()">POST</button>
+          </div>
+      </div>
+    </div>
+    <div class="contentboard">
+        <div class="feed">
+            <div class="submit">
+                    <textarea name="content" ng-model="content" placeholder="How do you feel today? :)"></textarea>
+                    <button ng-click="post()">POST</button>
+            </div>
+            <div ng-repeat="post in posts">
+                <div class="post">
+                    <div class="chip">
+                        <a href="#!/user/{{ post.from.userName }}"><img src="{{ post.from.avatarImg }}" width="96" height="96"></a>
+                        <p class="chip_name"> {{post.from.userName}} </p>
                     </div>
-                    <div ng-repeat="post in posts">
-                        <div class="post">
-                            <div class="chip">
-                                <a href="#!/user/{{ post.from.userName }}"><img src="{{ post.from.avatarImg }}" width="96" height="96"></a>
-                                <p class="chip_name"> {{post.from.userName}} </p>
+                    <div align="left">
+                    <p class="content_chip" ng-bind-html="post.content"></p>
+                        <div class="photos">
+                            <div ng-repeat="photo in post.photos | limitTo: 10">
+                                <a ng-click="openLightboxModalPostPhotos($parent.$index, $index)">
+                                    <img class="photo" title="{{ photo.caption }}" ng-src="{{ photo.url }}">
+                                </a>
                             </div>
-                            <p align="left" class="content_chip" ng-bind-html="post.content"></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <script src="/js/klim.js"></script>
-    </body>
-</html>
+    </div>
+</div>

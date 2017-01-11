@@ -1,6 +1,7 @@
 package de.himbiss.klim;
 
 import de.himbiss.klim.servlets.beans.Comment;
+import de.himbiss.klim.servlets.beans.Photo;
 import de.himbiss.klim.servlets.beans.Post;
 import de.himbiss.klim.servlets.beans.User;
 
@@ -78,7 +79,6 @@ public class DAO {
     public int createPosting(int userId, int profileUserId, String content) {
         try {
             String query = "INSERT INTO `posts` (`creation_time`, `posted_to`, `creator`, `content`) VALUES (CURRENT_TIMESTAMP, ?, ?, ?);";
-            System.err.println("userId:" + userId + " profileId:" + profileUserId + " content:" + content);
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, profileUserId);
             preparedStatement.setInt(2, userId);
@@ -92,6 +92,64 @@ public class DAO {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public int createPhoto(int userId, String caption) {
+        try {
+            String query = "INSERT INTO `photos` (`user`, `caption`, `upload_time`) VALUES (?, ?, CURRENT_TIMESTAMP);";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setString(2, caption);
+            int updateCount = preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (updateCount > 0 && generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<Photo> getAllPhotosOfUser(int userId) {
+        try {
+            String query = "SELECT * FROM `photos` where `user` = ? ORDER BY `upload_time` DESC;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Photo> photos = new LinkedList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String caption = resultSet.getString("caption").replace("\n", "<br>");
+                Date uploadTime = resultSet.getDate("upload_time");
+                photos.add(new Photo(id, userId, caption, uploadTime));
+            }
+            return photos;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Photo> getAllPhotosOfPost(int postId) {
+        try {
+            String query = "SELECT * FROM photos JOIN posts_photos on id=photo_id where post_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, postId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Photo> photos = new LinkedList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int userId = resultSet.getInt("user");
+                String caption = resultSet.getString("caption").replace("\n", "<br>");
+                Date uploadTime = resultSet.getDate("upload_time");
+                photos.add(new Photo(id, userId, caption, uploadTime));
+            }
+            return photos;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean followUser (int userId, int followerId) {
@@ -132,7 +190,26 @@ public class DAO {
                 Date creationTime = resultSet.getDate("creation_time");
                 String content = resultSet.getString("content").replace("\n", "<br>");
                 int postedTo = resultSet.getInt("posted_to");
-                return new Post(id, getUserById(creator), postedTo, creationTime, content);
+                return new Post(id, getUserById(creator), postedTo, creationTime, content, getAllPhotosOfPost(id));
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Photo getPhoto(int photoId) {
+        try {
+            String query = "SELECT * FROM photos where id = ? ORDER BY upload_time DESC;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, photoId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int userId = resultSet.getInt("user");
+                String caption = resultSet.getString("caption").replace("\n", "<br>");
+                Date uploadTime = resultSet.getDate("upload_time");
+                return new Photo(photoId, userId, caption, uploadTime);
             }
             return null;
         } catch (SQLException e) {
@@ -154,7 +231,7 @@ public class DAO {
                 Date creationTime = resultSet.getDate("creation_time");
                 String content = resultSet.getString("content").replace("\n", "<br>");
                 int postedTo = resultSet.getInt("posted_to");
-                posts.add(new Post(id, getUserById(creator), postedTo, creationTime, content));
+                posts.add(new Post(id, getUserById(creator), postedTo, creationTime, content, getAllPhotosOfPost(id)));
             }
             return posts;
         } catch (SQLException e) {

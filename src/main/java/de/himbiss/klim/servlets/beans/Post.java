@@ -13,16 +13,18 @@ public class Post {
     private int to;
     private Date date;
     private String content;
+    private List<Photo> photos;
 
     public Post() {
     }
 
-    public Post(int id, User creator, int to, Date date, String content) {
+    public Post(int id, User creator, int to, Date date, String content, List<Photo> photos) {
         this.id = id;
         this.from = creator;
         this.date = date;
         this.to = to;
         this.content = content;
+        this.photos = photos;
     }
 
     public int getId() {
@@ -63,5 +65,13 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 }

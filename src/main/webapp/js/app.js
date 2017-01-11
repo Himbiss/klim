@@ -1,6 +1,7 @@
-var app = angular.module('klim', ['ngResource', 'ngRoute', 'ngSanitize'])
+var app = angular.module('klim', ['ngResource', 'ngRoute', 'ngSanitize', 'bootstrapLightbox'])
                  .factory('User', function($resource) { return $resource('/rest/users/:id'); })
                  .factory('Followers', function($resource) {return $resource('/rest/followers/:userId/:followerId'); })
+                 .factory('Photos', function($resource) { return $resource('/rest/photos/:id'); })
                  .factory('Posts', function($resource) { return $resource('/rest/posts/:id'); });
 
 app.constant('AUTH_EVENTS', {

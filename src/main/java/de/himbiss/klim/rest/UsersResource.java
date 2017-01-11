@@ -16,8 +16,6 @@ import java.util.List;
  */
 @Produces(MediaType.APPLICATION_JSON)
 public class UsersResource {
-    private final PostsResource postsResource = new PostsResource();
-    private final FollowersResource followersResource = new FollowersResource();
 
     @GET
     public List<User> getUsers() {
