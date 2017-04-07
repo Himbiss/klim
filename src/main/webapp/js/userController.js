@@ -1,6 +1,7 @@
-angular.module('klim').controller('UserCtrl', function($scope, $http, $location, $routeParams, User, Followers, Posts, Photos, Lightbox) {
+angular.module('klim').controller('UserCtrl', function($rootScope, $scope, $http, $location, $routeParams, User, Followers, Posts, Photos, Lightbox) {
   var profileId = $routeParams.name;
 
+  $scope.currentUser = $rootScope.globals.session.user;
   $scope.profileUser = User.get({id : profileId});
 
   $scope.posts = Posts.query({userId : profileId});

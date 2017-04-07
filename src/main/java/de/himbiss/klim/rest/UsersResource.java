@@ -16,13 +16,14 @@ import java.util.List;
  */
 @Produces(MediaType.APPLICATION_JSON)
 public class UsersResource {
-
     @GET
+    @Secured
     public List<User> getUsers() {
         return Arrays.asList(DAO.getInstance().getUserById(1), DAO.getInstance().getUserById(2));
     }
 
     @GET
+    @Secured
     @Path("/{userId}")
     public User getUser(@PathParam("userId") String userId) {
         return DAO.getInstance().getUser(userId);

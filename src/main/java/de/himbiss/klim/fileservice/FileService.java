@@ -20,7 +20,7 @@ public class FileService {
     }
 
     public byte[] getFile(int downloadId) throws IOException {
-        Path file = filesDir.resolve(Integer.toString(downloadId) + ".png");
+        Path file = filesDir.resolve(Integer.toString(downloadId));
         return Files.readAllBytes(file);
     }
 }

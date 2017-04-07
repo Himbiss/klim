@@ -18,17 +18,20 @@ public class PostsResource {
     private final CommentsResource commentsResource = new CommentsResource();
 
     @GET
+    @Secured
     public List<Post> getPosts(@QueryParam("userId") String userId) {
         return DAO.getInstance().getAllPostsToUser(DAO.getInstance().getUser(userId).getId());
     }
 
     @GET
+    @Secured
     @Path("/{postId}")
     public Post getPost(@PathParam("postId") int postId) {
         return DAO.getInstance().getPost(postId);
     }
 
     @POST
+    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     public Response makePost(PostRequest postRequest) {
         int postingId = DAO.getInstance().createPosting(postRequest.getUserId(), postRequest.getProfileId(), postRequest.getContent());
@@ -41,6 +44,7 @@ public class PostsResource {
     }
 
     @DELETE
+    @Secured
     @Path("/{postId}")
     public Response deletePost(@PathParam("postId") int postId) {
         if (DAO.getInstance().deletePosting(postId)) {

@@ -1,17 +1,40 @@
-angular.module('klim')
-.controller('LoginController', function ($scope, $rootScope, $location, AUTH_EVENTS, AuthService) {
-  $scope.credentials = {
-    username: '',
-    password: ''
-  };
-  $scope.login = function (credentials) {
-    AuthService.login(credentials).then(function (user) {
-      $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-      $scope.setCurrentUser(user);
-      $location.path( "user/" + user.userName );
-    }, function () {
-      $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-      console.log('fail');
-    });
-  };
-})
+(function () {
+    'use strict';
+
+    angular
+        .module('klim')
+        .controller('LoginController', LoginController);
+
+    LoginController.$inject = ['$location', 'AuthenticationService'];
+    function LoginController($location, AuthenticationService) {
+        var vm = this;
+
+        vm.login = login;
+
+        (function initController() {
+            // reset login status
+            AuthenticationService.TrySessionLogin();
+        })();
+
+        function login() {
+            vm.dataLoading = true;
+            AuthenticationService.Login(vm.username, vm.password, function (response) {
+                if (response.sessionId) {
+                    AuthenticationService.SaveSession(response, function(result) {
+                        if (result.success) {
+                            $location.path('/user/'+result.data.userName);
+                        }
+                        else {
+                            console.log('error');
+                        }
+                    });
+                } else {
+                    console.log(response)
+                    //FlashService.Error(response.message);
+                    vm.dataLoading = false;
+                }
+            });
+        };
+    }
+
+})();

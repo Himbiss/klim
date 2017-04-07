@@ -1,5 +1,7 @@
 package de.himbiss.klim.servlets.beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,11 +17,12 @@ public class User {
     private Date creationTime;
     private String email;
     private String role;
+    private String passwordHash;
 
     public User() {
     }
 
-    public User(int id, String userName, List<String> description, String avatarImg, String backgroundImg, Date creationTime, String email, String role) {
+    public User(int id, String userName, List<String> description, String avatarImg, String backgroundImg, Date creationTime, String email, String role, String passwordHash) {
         this.id = id;
         this.userName = userName;
         this.description = description;
@@ -28,6 +31,7 @@ public class User {
         this.creationTime = creationTime;
         this.email = email;
         this.role = role;
+        this.passwordHash = passwordHash;
     }
 
     public String getRole() {
@@ -92,6 +96,11 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonIgnore
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
     @Override

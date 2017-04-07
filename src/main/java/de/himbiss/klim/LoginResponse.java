@@ -6,23 +6,23 @@ import de.himbiss.klim.servlets.beans.User;
  * Created by vincent on 26.12.16.
  */
 public class LoginResponse {
-    private String id;
+    private String sessionId;
     private User user;
 
     public LoginResponse() {
     }
 
     public LoginResponse(String id, User user) {
-        this.id = id;
+        this.sessionId = id;
         this.user = user;
     }
 
-    public String getId() {
-        return id;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSessionId(String id) {
+        this.sessionId = id;
     }
 
     public User getUser() {
